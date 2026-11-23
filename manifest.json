@@ -1,0 +1,16 @@
+{
+  "name": "الملكة أيتن عامر - Fan Hub",
+  "short_name": "أيتن عامر",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fff5f9",
+  "theme_color": "#d81b60",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "logo.png.PNG",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

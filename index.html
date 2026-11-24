@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>الملكة أيتن عامر - Fan Hub</title>
+  <meta name="theme-color" content="#d81b60" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="أيتن عامر" />
+  <link rel="apple-touch-icon" href="logo.png.PNG" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root { --pink-main:#d81b60; --pink-bright:#ff4081; --gold:#f5b942; --card-bg:#ffffff; --text-dark:#2d142c; --text-muted:#7a5c76; --border-soft:#f7d6e6; --shadow:0 8px 24px rgba(216,27,96,0.1); }
+    * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+    body { margin:0; font-family:'Cairo',sans-serif; background:linear-gradient(180deg,#fff2f8 0%,#fdf8ff 60%,#fff9f2 100%); color:var(--text-dark); min-height:100vh; padding-bottom:92px; }
+    .topbar { position:sticky; top:0; z-index:40; background:linear-gradient(135deg,#c2185b 0%,#ec407a 60%,#9c27b0 100%); color:#fff; padding:14px 16px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 4px 18px rgba(194,24,91,0.25); border-bottom-left-radius:20px; border-bottom-right-radius:20px; }
+    .brand-title { display:flex; align-items:center; gap:10px; }
+    .brand-avatar { width:40px; height:40px; border-radius:50%; object-fit:cover; border:2px solid var(--gold); background:#fff; }
+    .brand-text h1 { margin:0; font-size:17px; font-weight:800; line-height:1.2; }
+    .brand-text span { font-size:11px; letter-spacing:1px; color:#ffe3f0; font-weight:700; }
+    .designer-badge { display:flex; align-items:center; gap:6px; background:#111; border:1.5px solid var(--gold); border-radius:12px; padding:4px 8px; }
+    .designer-badge img { width:26px; height:26px; object-fit:contain; border-radius:6px; }
+    .designer-badge span { color:#fff; font-size:10px; font-weight:700; }
+    .container { max-width:720px; margin:0 auto; padding:16px; }
+    .hero-card { position:relative; border-radius:24px; overflow:hidden; background:linear-gradient(135deg,#d81b60,#ab47bc); color:#fff; display:grid; grid-template-columns:1.15fr 0.85fr; align-items:center; min-height:175px; box-shadow:var(--shadow); margin-bottom:18px; }
+    .hero-content { padding:18px 16px; z-index:2; }
+    .hero-crown { display:inline-block; background:rgba(255,255,255,0.2); border:1px solid rgba(245,185,66,0.6); color:#fff6d1; font-size:11px; font-weight:700; padding:3px 10px; border-radius:999px; margin-bottom:8px; }
+    .hero-content h2 { margin:0 0 6px; font-size:18px; font-weight:900; line-height:1.35; }
+    .hero-content p { margin:0; font-size:12px; color:#ffe4f1; line-height:1.5; }
+    .hero-photo-wrap { height:100%; min-height:175px; display:flex; align-items:flex-end; justify-content:center; background:radial-gradient(circle at center,rgba(255,255,255,0.22),transparent 70%); }
+    .hero-photo { width:100%; height:185px; object-fit:cover; object-position:top center; display:block; }
+    .cats-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin-bottom:18px; overflow-x:auto; }
+    .cat-btn { border:2px solid transparent; border-radius:18px; padding:10px 6px; background:#fff; color:var(--text-dark); font-family:'Cairo',sans-serif; font-size:11px; font-weight:700; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:5px; box-shadow:0 4px 12px rgba(0,0,0,0.05); }
+    .cat-btn.active { background:linear-gradient(135deg,#d81b60,#ff4081); color:#fff; border-color:var(--gold); }
+    .cat-icon { font-size:20px; line-height:1; }
+    .search-box { display:none; margin-bottom:16px; }
+    .search-box.show { display:block; }
+    .search-input { width:100%; padding:12px 16px; border-radius:16px; border:2px solid var(--border-soft); background:#fff; font-family:'Cairo',sans-serif; font-size:14px; color:var(--text-dark); outline:none; }
+    .section-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+    .section-head h3 { margin:0; font-size:17px; font-weight:800; }
+    .count-pill { background:#ffe0ee; color:var(--pink-main); font-size:12px; font-weight:800; padding:3px 10px; border-radius:999px; }
+    .works-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+    .work-card { background:var(--card-bg); border-radius:20px; overflow:hidden; box-shadow:0 6px 18px rgba(142,36,170,0.08); border:1px solid var(--border-soft); display:flex; flex-direction:column; cursor:pointer; }
+    .work-thumb-wrap { position:relative; width:100%; aspect-ratio:16/10; background:linear-gradient(135deg,#fce4ec,#f3e5f5); overflow:hidden; }
+    .work-thumb { width:100%; height:100%; object-fit:cover; display:block; }
+    .play-badge { position:absolute; bottom:8px; left:8px; width:32px; height:32px; border-radius:50%; background:rgba(216,27,96,0.92); color:#fff; display:flex; align-items:center; justify-content:center; font-size:13px; }
+    .featured-tag { position:absolute; top:8px; right:8px; background:var(--gold); color:#2d142c; font-size:10px; font-weight:800; padding:2px 8px; border-radius:999px; }
+    .fav-mini-btn { position:absolute; top:8px; left:8px; width:30px; height:30px; border-radius:50%; border:none; background:rgba(255,255,255,0.9); font-size:15px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+    .work-info { padding:10px 12px 12px; }
+    .work-title { margin:0 0 4px; font-size:14px; font-weight:800; line-height:1.35; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+    .work-meta { display:flex; align-items:center; justify-content:space-between; font-size:11px; color:var(--text-muted); font-weight:600; }
+    .footer-sign { margin-top:28px; text-align:center; padding:16px; background:#fff; border-radius:20px; border:1px solid var(--border-soft); display:flex; align-items:center; justify-content:center; gap:10px; }
+    .footer-logo-box { background:#000; padding:6px; border-radius:12px; border:1.5px solid var(--gold); display:flex; align-items:center; justify-content:center; }
+    .footer-logo-box img { width:34px; height:34px; object-fit:contain; }
+    .footer-text { text-align:right; }
+    .footer-text strong { display:block; font-size:13px; }
+    .footer-text span { font-size:11px; color:var(--text-muted); }
+    .bottom-nav { position:fixed; bottom:0; left:0; right:0; background:rgba(255,255,255,0.96); backdrop-filter:blur(12px); border-top:1px solid var(--border-soft); display:grid; grid-template-columns:repeat(4,1fr); padding:8px 6px calc(8px + env(safe-area-inset-bottom)); z-index:50; box-shadow:0 -4px 20px rgba(0,0,0,0.06); }
+    .nav-btn { border:none; background:none; font-family:'Cairo',sans-serif; font-size:11px; font-weight:700; color:var(--text-muted); display:flex; flex-direction:column; align-items:center; gap:2px; cursor:pointer; }
+    .nav-btn.active { color:var(--pink-main); }
+    .nav-btn span.ico { font-size:19px; }
+    .modal-overlay { position:fixed; inset:0; background:rgba(30,10,28,0.72); backdrop-filter:blur(4px); z-index:100; display:none; align-items:flex-end; justify-content:center; padding:12px; }
+    .modal-overlay.open { display:flex; }
+    .modal-sheet { width:100%; max-width:620px; max-height:90vh; overflow-y:auto; background:#fff; border-radius:26px; padding:18px; box-shadow:0 16px 40px rgba(0,0,0,0.3); }
+    .modal-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+    .modal-header h3 { margin:0; font-size:17px; font-weight:800; }
+    .close-btn { border:none; background:#ffe4f0; color:var(--pink-main); width:34px; height:34px; border-radius:50%; font-size:18px; font-weight:800; cursor:pointer; }
+    .video-frame { width:100%; aspect-ratio:16/9; border-radius:16px; border:none; background:#000; margin-bottom:12px; }
+    .btn-primary { width:100%; border:none; border-radius:14px; padding:12px 16px; background:linear-gradient(135deg,#d81b60,#ff4081); color:#fff; font-family:'Cairo',sans-serif; font-size:14px; font-weight:800; cursor:pointer; text-align:center; text-decoration:none; display:inline-block; }
+    .btn-secondary { width:100%; border:1.5px solid var(--border-soft); border-radius:14px; padding:10px 14px; background:#fff5fa; color:var(--pink-main); font-family:'Cairo',sans-serif; font-size:13px; font-weight:700; cursor:pointer; margin-top:8px; }
+    .field { margin-bottom:10px; }
+    .field label { display:block; font-size:12px; font-weight:700; margin-bottom:4px; }
+    .field input,.field select,.field textarea { width:100%; padding:10px 12px; border-radius:12px; border:1.5px solid var(--border-soft); font-family:'Cairo',sans-serif; font-size:13px; outline:none; }
+    .admin-item { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:10px; border-radius:14px; background:#fff7fb; border:1px solid var(--border-soft); margin-bottom:8px; }
+    .admin-item-actions { display:flex; gap:6px; }
+    .mini-edit,.mini-del { border:none; border-radius:10px; padding:6px 10px; font-family:'Cairo',sans-serif; font-size:11px; font-weight:700; cursor:pointer; }
+    .mini-edit { background:#ede7f6; color:#5e35b1; }
+    .mini-del { background:#ffebee; color:#c62828; }
+    .empty-state { grid-column:1/-1; text-align:center; padding:36px 16px; background:#fff; border-radius:20px; border:1.5px dashed var(--border-soft); color:var(--text-muted); font-size:14px; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-title">
+      <img src="hero.jpg.PNG" alt="أيتن عامر" class="brand-avatar" onerror="this.src='logo.png.PNG'" />
+      <div class="brand-text"><h1>👑 الملكة أيتن عامر</h1><span>FAN HUB</span></div>
+    </div>
+    <div class="designer-badge" title="تصميم وتطوير H media">
+      <img src="logo.png.PNG" alt="H media" onerror="this.style.display='none'" /><span>H media</span>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero-card">
+      <div class="hero-content">
+        <span class="hero-crown">✨ العالم الفني الرسمي للجمهور</span>
+        <h2>أهلاً بكم في عالم الملكة أيتن عامر!</h2>
+        <p>كل أغانيها، كليباتها، مسلسلاتها، أفلامها ولقاءاتها في مكان واحد ممتع وسريع.</p>
+      </div>
+      <div class="hero-photo-wrap">
+        <img src="hero.jpg.PNG" alt="الفنانة أيتن عامر" class="hero-photo" onerror="this.style.display='none'" />
+      </div>
+    </section>
+
+    <section class="cats-grid" id="categoriesBar">
+      <button class="cat-btn active" data-cat="الكل"><span class="cat-icon">✨</span><span>الكل</span></button>
+      <button class="cat-btn" data-cat="أغاني وكليبات"><span class="cat-icon">🎤</span><span>أغاني</span></button>
+      <button class="cat-btn" data-cat="مسلسلات"><span class="cat-icon">🎬</span><span>مسلسلات</span></button>
+      <button class="cat-btn" data-cat="أفلام"><span class="cat-icon">🍿</span><span>أفلام</span></button>
+      <button class="cat-btn" data-cat="لقاءات وتصاريح"><span class="cat-icon">📺</span><span>لقاءات</span></button>
+    </section>
+
+    <div class="search-box" id="searchBox">
+      <input type="search" id="searchInput" class="search-input" placeholder="ابحث باسم الأغنية أو المسلسل أو السنة..." />
+    </div>
+
+    <div class="section-head">
+      <h3 id="sectionTitle">🔥 أحدث الأعمال</h3>
+      <span class="count-pill" id="worksCount">0</span>
+    </div>
+
+    <section class="works-grid" id="worksGrid">
+      <div class="empty-state">جاري تحميل أعمال الملكة أيتن عامر... ✨</div>
+    </section>
+
+    <footer class="footer-sign">
+      <div class="footer-logo-box"><img src="logo.png.PNG" alt="H media" onerror="this.style.display='none'" /></div>
+      <div class="footer-text"><strong>تصميم وتطوير H media</strong><span>تطبيق أرشيف جمهور الفنانة أيتن عامر</span></div>
+    </footer>
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="nav-btn active" data-tab="home"><span class="ico">🏠</span><span>الرئيسية</span></button>
+    <button class="nav-btn" data-tab="favs"><span class="ico">💖</span><span>المفضلة</span></button>
+    <button class="nav-btn" data-tab="search"><span class="ico">🔍</span><span>البحث</span></button>
+    <button class="nav-btn" data-tab="admin"><span class="ico">🔐</span><span>لوحة التحكم</span></button>
+  </nav>
+
+  <div class="modal-overlay" id="viewModal">
+    <div class="modal-sheet">
+      <div class="modal-header"><h3 id="modalTitle">عنوان العمل</h3><button class="close-btn" onclick="closeModal('viewModal')">×</button></div>
+      <div id="modalMedia"></div>
+      <p id="modalMeta" style="font-size:12px; color:#7a5c76; font-weight:700; margin:6px 0;"></p>
+      <p id="modalDesc" style="font-size:14px; line-height:1.6; margin:8px 0 14px;"></p>
+      <a id="modalExternalBtn" href="#" target="_blank" rel="noopener" class="btn-primary" style="display:none;">مشاهدة على يوتيوب ▶</a>
+      <button id="modalFavBtn" class="btn-secondary"></button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="adminModal">
+    <div class="modal-sheet">
+      <div class="modal-header"><h3>👑 لوحة إدارة المحتوى</h3><button class="close-btn" onclick="closeModal('adminModal')">×</button></div>
+      <div id="pinStep">
+        <div class="field"><label>أدخل الرقم السري للإدارة (PIN)</label><input type="password" id="pinInput" inputmode="numeric" placeholder="••••" /></div>
+        <button class="btn-primary" onclick="unlockAdmin()">دخول لوحة التحكم 🔓</button>
+        <p id="pinError" style="color:#c62828; font-size:12px; font-weight:700; margin-top:8px;"></p>
+      </div>
+      <div id="adminStep" style="display:none;">
+        <input type="hidden" id="editWorkId" />
+        <div class="field"><label>اسم العمل / الأغنية *</label><input type="text" id="workTitle" placeholder="مثال: كليب بناقص" /></div>
+        <div class="field"><label>التصنيف *</label><select id="workCategory"><option value="أغاني وكليبات">أغاني وكليبات</option><option value="مسلسلات">مسلسلات</option><option value="أفلام">أفلام</option><option value="لقاءات وتصاريح">لقاءات وتصاريح</option></select></div>
+        <div class="field"><label>رابط يوتيوب (اختياري)</label><input type="url" id="workYoutube" placeholder="https://youtube.com/watch?v=..." /></div>
+        <div class="field"><label>رابط صورة مخصصة (اختياري)</label><input type="url" id="workImage" placeholder="https://..." /></div>
+        <div class="field"><label>سنة الإصدار (اختياري)</label><input type="text" id="workYear" placeholder="2026" /></div>
+        <div class="field"><label>وصف قصير (اختياري)</label><textarea id="workDesc" rows="2" placeholder="نبذة عن العمل..."></textarea></div>
+        <div class="field" style="display:flex; align-items:center; gap:8px;"><input type="checkbox" id="workFeatured" style="width:auto;" /><label for="workFeatured" style="margin:0;">تمييز العمل في المقدمة ⭐</label></div>
+        <button class="btn-primary" id="saveWorkBtn" onclick="saveWorkItem()">حفظ العمل ✨</button>
+        <button class="btn-secondary" id="cancelEditBtn" style="display:none;" onclick="resetAdminForm()">إلغاء التعديل</button>
+        <p id="adminMsg" style="font-size:12px; font-weight:700; margin-top:8px;"></p>
+        <hr style="border:none; border-top:1px solid #f7d6e6; margin:16px 0;" />
+        <h4 style="margin:0 0 10px; font-size:14px;">الأعمال المسجلة حالياً</h4>
+        <div id="adminWorksList"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://wdcrjfvwbojzceguaamy.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_YEQCsYd_SZXswRU-3Cb9AQ_65LZrhph';
+    const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    let allWorks = [], activeCategory = 'الكل', activeTab = 'home';
+    let adminPin = sessionStorage.getItem('ayten_admin_pin') || '';
+    let favorites = JSON.parse(localStorage.getItem('ayten_favs') || '[]');
+
+    function escapeHtml(s) {
+      return s ? String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;') : '';
+    }
+    function safeUrl(u) {
+      try { const x = new URL(u, location.href); return (x.protocol === 'https:' || x.protocol === 'http:') ? x.href : ''; } catch { return ''; }
+    }
+    function getYouTubeId(u) {
+      const m = u && u.match(/(?:youtube\.com\/(?:.*v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+      return m ? m[1] : null;
+    }
+    function getThumb(w) {
+      const c = safeUrl(w.image_url); if (c) return c;
+      const y = getYouTubeId(w.youtube_url); return y ? `https://img.youtube.com/vi/${y}/hqdefault.jpg` : 'hero.jpg.PNG';
+    }
+
+    async function loadWorks() {
+      const grid = document.getElementById('worksGrid');
+      const { data, error } = await db.from('works').select('*').order('is_featured',{ascending:false}).order('created_at',{ascending:false});
+      if (error) { grid.innerHTML = `<div class="empty-state">تأكد من تشغيل كود الـ SQL في Supabase.<br><small>${escapeHtml(error.message)}</small></div>`; return; }
+      allWorks = data || []; renderWorks(); renderAdminList();
+    }
+
+    function renderWorks() {
+      const grid = document.getElementById('worksGrid');
+      const q = document.getElementById('searchInput').value.trim().toLowerCase();
+      const list = allWorks.filter(w => {
+        if (activeTab === 'favs' && !favorites.includes(w.id)) return false;
+        if (activeCategory !== 'الكل' && w.category !== activeCategory) return false;
+        if (q && !`${w.title} ${w.category} ${w.release_year||''} ${w.description||''}`.toLowerCase().includes(q)) return false;
+        return true;
+      });
+      document.getElementById('worksCount').textContent = list.length;
+      if (!list.length) {
+        grid.innerHTML = activeTab === 'favs'
+          ? '<div class="empty-state">لسه مفيش أعمال في المفضلة 💖 اضغط على القلب في أي عمل لحفظه هنا.</div>'
+          : '<div class="empty-state">لسه مفيش أعمال مضافة هنا ✨ ادخل على <b>لوحة التحكم</b> تحت لإضافة أول عمل!</div>';
+        return;
+      }
+      grid.innerHTML = list.map(w => {
+        const fav = favorites.includes(w.id), th = getThumb(w), vid = Boolean(getYouTubeId(w.youtube_url) || safeUrl(w.youtube_url));
+        return `<article class="work-card" onclick="openWork(${w.id})"><div class="work-thumb-wrap"><img src="${escapeHtml(th)}" alt="${escapeHtml(w.title)}" class="work-thumb" onerror="this.src='logo.png.PNG'" />${w.is_featured?'<span class="featured-tag">⭐ مميز</span>':''}<button class="fav-mini-btn" onclick="event.stopPropagation();toggleFav(${w.id})">${fav?'💖':'🤍'}</button>${vid?'<span class="play-badge">▶</span>':''}</div><div class="work-info"><h4 class="work-title">${escapeHtml(w.title)}</h4><div class="work-meta"><span>${escapeHtml(w.category)}</span><span>${escapeHtml(w.release_year||'')}</span></div></div></article>`;
+      }).join('');
+    }
+
+    function toggleFav(id) {
+      favorites = favorites.includes(id) ? favorites.filter(f => f !== id) : [...favorites, id];
+      localStorage.setItem('ayten_favs', JSON.stringify(favorites)); renderWorks();
+    }
+
+    function openWork(id) {
+      const w = allWorks.find(x => x.id === id); if (!w) return;
+      document.getElementById('modalTitle').textContent = w.title;
+      document.getElementById('modalMeta').textContent = `${w.category}${w.release_year ? ' • ' + w.release_year : ''}`;
+      document.getElementById('modalDesc').textContent = w.description || 'عمل فني مميز من أرشيف الملكة أيتن عامر.';
+      const box = document.getElementById('modalMedia'), yt = getYouTubeId(w.youtube_url), ext = safeUrl(w.youtube_url);
+      box.innerHTML = yt ? `<iframe class="video-frame" src="https://www.youtube.com/embed/${yt}" allowfullscreen></iframe>`
+        : `<img src="${escapeHtml(getThumb(w))}" alt="${escapeHtml(w.title)}" style="width:100%;border-radius:16px;max-height:240px;object-fit:cover;margin-bottom:10px;" onerror="this.style.display='none'" />`;
+      const btn = document.getElementById('modalExternalBtn');
+      btn.style.display = ext ? 'inline-block' : 'none'; if (ext) btn.href = ext;
+      const favBtn = document.getElementById('modalFavBtn');
+      const upd = () => favBtn.textContent = favorites.includes(w.id) ? 'إزالة من المفضلة 💔' : 'إضافة للمفضلة 💖';
+      upd(); favBtn.onclick = () => { toggleFav(w.id); upd(); };
+      document.getElementById('viewModal').classList.add('open');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('open');
+      if (id === 'viewModal') document.getElementById('modalMedia').innerHTML = '';
+    }
+
+    document.querySelectorAll('.cat-btn').forEach(b => b.addEventListener('click', () => {
+      document.querySelectorAll('.cat-btn').forEach(x => x.classList.remove('active'));
+      b.classList.add('active'); activeCategory = b.dataset.cat; renderWorks();
+    }));
+
+    document.querySelectorAll('.nav-btn').forEach(b => b.addEventListener('click', () => {
+      const tab = b.dataset.tab;
+      if (tab === 'admin') { openAdminModal(); return; }
+      document.querySelectorAll('.nav-btn').forEach(x => x.classList.remove('active'));
+      b.classList.add('active'); activeTab = tab;
+      const sb = document.getElementById('searchBox'), tt = document.getElementById('sectionTitle');
+      if (tab === 'search') { sb.classList.add('show'); document.getElementById('searchInput').focus(); tt.textContent = '🔍 نتائج البحث'; }
+      else if (tab === 'favs') { sb.classList.remove('show'); tt.textContent = '💖 أعمالي المفضلة'; }
+      else { sb.classList.remove('show'); tt.textContent = '🔥 أحدث الأعمال'; }
+      renderWorks();
+    }));
+
+    document.getElementById('searchInput').addEventListener('input', renderWorks);
+
+    function openAdminModal() {
+      document.getElementById('adminModal').classList.add('open');
+      document.getElementById('pinStep').style.display = adminPin ? 'none' : 'block';
+      document.getElementById('adminStep').style.display = adminPin ? 'block' : 'none';
+      if (adminPin) renderAdminList();
+    }
+
+    async function unlockAdmin() {
+      const pin = document.getElementById('pinInput').value.trim(), err = document.getElementById('pinError');
+      err.textContent = ''; if (!pin) { err.textContent = 'اكتب الرقم السري الأول.'; return; }
+      const { data, error } = await db.rpc('verify_admin_pin', { pin_input: pin });
+      if (error) { err.textContent = 'خطأ في التحقق: ' + error.message; return; }
+      if (data === true) {
+        adminPin = pin; sessionStorage.setItem('ayten_admin_pin', pin);
+        document.getElementById('pinStep').style.display = 'none';
+        document.getElementById('adminStep').style.display = 'block';
+        renderAdminList();
+      } else err.textContent = 'الرقم السري غير صحيح ❌';
+    }
+
+    async function saveWorkItem() {
+      const msg = document.getElementById('adminMsg'); msg.textContent = '';
+      const id = document.getElementById('editWorkId').value, title = document.getElementById('workTitle').value.trim();
+      if (!title) { msg.style.color='#c62828'; msg.textContent='اكتب اسم العمل الأول.'; return; }
+      const btn = document.getElementById('saveWorkBtn'); btn.disabled = true; btn.textContent = 'جاري الحفظ...';
+      const { error } = await db.rpc('save_work', {
+        pin_input: adminPin, work_id: id ? Number(id) : null, p_title: title,
+        p_category: document.getElementById('workCategory').value,
+        p_youtube_url: document.getElementById('workYoutube').value.trim() || null,
+        p_image_url: document.getElementById('workImage').value.trim() || null,
+        p_release_year: document.getElementById('workYear').value.trim() || null,
+        p_description: document.getElementById('workDesc').value.trim() || null,
+        p_is_featured: document.getElementById('workFeatured').checked
+      });
+      btn.disabled = false; btn.textContent = 'حفظ العمل ✨';
+      if (error) { msg.style.color='#c62828'; msg.textContent='فشل الحفظ: '+error.message; return; }
+      msg.style
+      msg.style.color='#2e7d32'; msg.textContent='تم الحفظ بنجاح ✅'; resetAdminForm(); await loadWorks();
+    }
+
+    function editWorkItem(id) {
+      const w = allWorks.find(x => x.id === id); if (!w) return;
+      document.getElementById('editWorkId').value = w.id;
+      document.getElementById('workTitle').value = w.title;
+      document.getElementById('workCategory').value = w.category;
+      document.getElementById('workYoutube').value = w.youtube_url || '';
+      document.getElementById('workImage').value = w.image_url || '';
+      document.getElementById('workYear').value = w.release_year || '';
+      document.getElementById('workDesc').value = w.description || '';
+      document.getElementById('workFeatured').checked = Boolean(w.is_featured);
+      document.getElementById('cancelEditBtn').style.display = 'block';
+      document.getElementById('saveWorkBtn').textContent = 'تحديث العمل ✅';
+    }
+
+    function resetAdminForm() {
+      ['editWorkId','workTitle','workYoutube','workImage','workYear','workDesc'].forEach(i => document.getElementById(i).value = '');
+      document.getElementById('workFeatured').checked = false;
+      document.getElementById('cancelEditBtn').style.display = 'none';
+      document.getElementById('saveWorkBtn').textContent = 'حفظ العمل ✨';
+    }
+
+    async function deleteWorkItem(id) {
+      if (!confirm('متأكد إنك عايز تمسح العمل ده؟')) return;
+      const { error } = await db.rpc('delete_work', { pin_input: adminPin, work_id: Number(id) });
+      if (error) { alert('فشل الحذف: ' + error.message); return; }
+      await loadWorks();
+    }
+
+    function renderAdminList() {
+      const box = document.getElementById('adminWorksList'); if (!box) return;
+      box.innerHTML = allWorks.length ? allWorks.map(w => `<div class="admin-item"><div><strong style="font-size:13px;display:block;">${escapeHtml(w.title)}</strong><small style="color:#7a5c76;">${escapeHtml(w.category)} ${w.release_year?'• '+escapeHtml(w.release_year):''}</small></div><div class="admin-item-actions"><button class="mini-edit" onclick="editWorkItem(${w.id})">تعديل</button><button class="mini-del" onclick="deleteWorkItem(${w.id})">حذف</button></div></div>`).join('') : '<p style="font-size:12px;color:#7a5c76;">مفيش أعمال لسه.</p>';
+    }
+    loadWorks();
+  </script>
+</body>
+</html>
